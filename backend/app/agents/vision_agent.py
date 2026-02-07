@@ -108,9 +108,7 @@ class VisionAgent:
         result.raw_response = gemini_result["response"]
         
         # Parse the JSON response
-        try:
-            # Try to extract JSON from the response
-            response_text = gemini_result["response"]
+        response_text = gemini_result["response"]
             
             # Handle markdown code blocks
             # Robust JSON extraction
