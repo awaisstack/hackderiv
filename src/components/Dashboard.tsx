@@ -125,8 +125,12 @@ export default function Dashboard() {
         e.preventDefault();
     };
 
+    const isAnalyzingRef = useRef(false);
+
     const simulateAgentProgress = async () => {
         for (let i = 0; i < agents.length; i++) {
+            if (!isAnalyzingRef.current) break; // Stop if analysis stopped/failed
+
             setCurrentAgentIndex(i);
             setAgents(prev => prev.map((a, idx) =>
                 idx === i ? { ...a, status: 'running' } : a
@@ -139,7 +143,15 @@ export default function Dashboard() {
 
             setAllLogs(prev => [...prev, `${agents[i].icon} ${name} initialized...`]);
 
-            await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 1000));
+            // Wait with check
+            const waitTime = 2000 + Math.random() * 1000;
+            const start = Date.now();
+            while (Date.now() - start < waitTime) {
+                if (!isAnalyzingRef.current) break;
+                await new Promise(r => setTimeout(r, 100));
+            }
+
+            if (!isAnalyzingRef.current) break;
 
             setAgents(prev => prev.map((a, idx) =>
                 idx === i ? { ...a, status: 'complete', thinkingText: '✓ Analysis Complete' } : a
@@ -153,6 +165,7 @@ export default function Dashboard() {
         if (!file || !claimedAmount) return;
 
         setIsAnalyzing(true);
+        isAnalyzingRef.current = true;
         setResult(null);
         setAllLogs([]);
         setAgents(prev => prev.map(a => ({ ...a, status: 'pending', logs: [], thinkingText: '' })));
@@ -172,11 +185,21 @@ export default function Dashboard() {
             });
 
             if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(errorText);
+                let errorMessage = `HTTP Error ${response.status}: ${response.statusText}`;
+                try {
+                    const errorData = await response.json();
+                    if (errorData.detail) errorMessage = errorData.detail;
+                } catch (e) {
+                    const text = await response.text();
+                    if (text) errorMessage = text;
+                }
+                throw new Error(errorMessage);
             }
 
             const data = await response.json();
+
+            // Analysis success - stop simulation and show real data
+            isAnalyzingRef.current = false;
 
             // Update agents with real data
             if (data.agents) {
@@ -198,6 +221,7 @@ export default function Dashboard() {
             setResult(data.analysis);
         } catch (error) {
             console.error('Analysis error:', error);
+            isAnalyzingRef.current = false; // Stop simulation
             setAllLogs(prev => [...prev, `❌ Error: ${error instanceof Error ? error.message : String(error)}`]);
             setAgents(prev => prev.map(a => ({
                 ...a,
@@ -207,6 +231,7 @@ export default function Dashboard() {
             })));
         } finally {
             setIsAnalyzing(false);
+            isAnalyzingRef.current = false;
         }
     };
 

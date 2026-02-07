@@ -130,6 +130,9 @@ async def scan_receipt(
         }
         
     except Exception as e:
+        import traceback
+        print(f"ERROR ANALYZING RECEIPT: {str(e)}")
+        print(traceback.format_exc())
         raise HTTPException(
             status_code=500,
             detail=f"Analysis failed: {str(e)}"
