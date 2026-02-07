@@ -19,9 +19,8 @@ app = FastAPI(
     title="Deriv P2P Sentinel",
     description="AI-Powered Receipt Fraud Detection for P2P Trading",
     version="1.0.0",
-    # Vercel Serverless environment detection
-    # AWS_LAMBDA_FUNCTION_NAME is present in Vercel System Env
-    root_path="/api/py" if (os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME")) else ""
+    # root_path logic removed to avoid conflict with api/index.py stripping
+    root_path=""
 )
 
 # CORS setup for frontend
