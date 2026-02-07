@@ -30,7 +30,7 @@ graph TD
         
         Meta -->|EXIF/Hex| ValidMeta{Metadata Logic}
         Priv -->|OCR/Regex| Tesseract[Tesseract OCR]
-        Vision -->|Start Analysis| Gemini[✨ Google Gemini 1.5 Pro]
+        Vision -->|Start Analysis| Gemini[✨ Google Gemini Pro]
     end
 
     ValidMeta -->|Signals| Aggregator[Risk Scoring Engine]
