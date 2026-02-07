@@ -32,6 +32,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Path stripping middleware for Vercel
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class StripApiPrefixMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        # Strip /api/py prefix if present
+        if request.scope["path"].startswith("/api/py"):
+            request.scope["path"] = request.scope["path"].replace("/api/py", "", 1)
+            if not request.scope["path"]:
+                request.scope["path"] = "/"
+        return await call_next(request)
+
+app.add_middleware(StripApiPrefixMiddleware)
+
 # Initialize orchestrator
 orchestrator = Orchestrator()
 
