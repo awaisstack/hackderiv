@@ -14,13 +14,13 @@ from dotenv import load_dotenv
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(env_path)
 
-# Model priority chain (Quality First -> Fallback to Speed)
-# We prioritize the "Best" model (Pro) for the demo, falling back to faster/lite models on rate limits.
+# Model priority chain (Modern Models First -> Legacy Fallback)
+# Prioritizing 2.x models for better performance/quality.
 MODEL_PRIORITY = [
-    "gemini-1.5-pro",          # BEST quality (High intelligence)
-    "gemini-2.0-flash",        # Balanced speed/intelligence
-    "gemini-1.5-flash",        # Reliable workhorse (High limits)
-    "gemini-2.5-flash-lite",   # Ultimate fallback (Fastest)
+    "gemini-2.0-flash",        # Primary: Balanced speed/intelligence
+    "gemini-2.5-flash-lite",   # Fast fallback
+    "gemini-1.5-pro",          # Legacy Pro (Slower but smart)
+    "gemini-1.5-flash",        # LAST RESORT only
 ]
 
 class GeminiClient:
