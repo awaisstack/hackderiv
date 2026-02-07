@@ -115,7 +115,7 @@ export default function Dashboard() {
 
     // Load pre-stored sample receipts for judges
     const loadSampleReceipt = useCallback(async (type: 'original' | 'edited') => {
-        const filename = type === 'original' ? '/original_receipt.png' : '/edited_receipt.png';
+        const filename = type === 'original' ? '/original_receipt.jpeg' : '/edited_receipt.png';
         try {
             const response = await fetch(filename);
             const blob = await response.blob();
