@@ -335,28 +335,6 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Sample Receipt Buttons for Judges */}
-                    <div className="bg-slate-50 border border-dashed border-slate-300 rounded-lg p-3">
-                        <p className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-2 text-center">
-                            🧪 Demo Samples for Testing
-                        </p>
-                        <div className="flex gap-2">
-                            <button
-                                onClick={() => loadSampleReceipt('original')}
-                                className="flex-1 px-3 py-2 text-xs font-medium rounded-lg border border-green-200 bg-green-50 text-green-700 hover:bg-green-100 transition-colors flex items-center justify-center gap-1.5"
-                                disabled={isAnalyzing}
-                            >
-                                <span className="text-sm">✅</span> Legit Receipt
-                            </button>
-                            <button
-                                onClick={() => loadSampleReceipt('edited')}
-                                className="flex-1 px-3 py-2 text-xs font-medium rounded-lg border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 transition-colors flex items-center justify-center gap-1.5"
-                                disabled={isAnalyzing}
-                            >
-                                <span className="text-sm">🚨</span> Fake Receipt
-                            </button>
-                        </div>
-                    </div>
 
                     {/* Transaction Form */}
                     <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex-1">
