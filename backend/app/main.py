@@ -18,7 +18,8 @@ load_dotenv()
 app = FastAPI(
     title="Deriv P2P Sentinel",
     description="AI-Powered Receipt Fraud Detection for P2P Trading",
-    version="1.0.0"
+    version="1.0.0",
+    root_path="/api/py" if os.getenv("VERCEL") else ""
 )
 
 # CORS setup for frontend
