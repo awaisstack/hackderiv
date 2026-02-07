@@ -14,13 +14,13 @@ from dotenv import load_dotenv
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(env_path)
 
-# Model priority chain (best to fallback)
-# Gemini 1.5 Flash has highest free tier limits (1000+ RPM, 1500 RPD)
+# Model priority chain (2026 models)
+# gemini-2.5-flash-lite is fastest and most cost-efficient for free tier
 MODEL_PRIORITY = [
-    "gemini-1.5-flash",        # BEST for free tier: highest limits
-    "gemini-1.5-pro",          # Pro version, good limits
-    "gemini-2.0-flash",        # Fast but lower free tier limits
-    "gemini-2.5-flash",        # Newest but very low free tier limits
+    "gemini-2.5-flash-lite",   # BEST for free tier: fastest, highest throughput
+    "gemini-2.5-flash",        # Stable: well-rounded
+    "gemini-2.0-flash",        # Legacy fallback
+    "gemini-3-flash-preview",  # Newest but may have lower free limits
 ]
 
 class GeminiClient:
