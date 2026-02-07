@@ -15,10 +15,12 @@ env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(env_path)
 
 # Model priority chain (best to fallback)
+# Gemini 1.5 Flash has highest free tier limits (1000+ RPM, 1500 RPD)
 MODEL_PRIORITY = [
-    "gemini-2.5-flash",        # Stable: High rate limits (use first for free tier)
-    "gemini-2.5-pro",          # Pro: Better reasoning
-    "gemini-2.0-flash",        # Fast fallback
+    "gemini-1.5-flash",        # BEST for free tier: highest limits
+    "gemini-1.5-pro",          # Pro version, good limits
+    "gemini-2.0-flash",        # Fast but lower free tier limits
+    "gemini-2.5-flash",        # Newest but very low free tier limits
 ]
 
 class GeminiClient:
