@@ -1,36 +1,34 @@
-# Deriv P2P Sentinel 🛡️
+# Deriv P2P Sentinel 
 > **AI-Powered Receipt Fraud Detection System** for the Deriv AI Talent Sprint.
 
-![Sentinel HUD](https://github.com/awaisstack/hackderiv/assets/placeholder-hud.png)
-
-## 🚨 The Challenge: P2P Payment Fraud
+## The Challenge: P2P Payment Fraud
 In P2P trading, scammers often upload **fake, photoshopped, or manipulated bank receipts** to claim they have sent payment when they haven't. Manual verification is:
 - **Slow**: Delays trade release.
 - **Error-Prone**: Human eyes miss subtle pixel tampering.
 - **High-Risk**: Leads to financial loss for traders.
 
-## 💡 The Solution: Multi-Agent Forensic Analysis
+## The Solution: Multi-Agent Forensic Analysis
 **Deriv P2P Sentinel** is an autonomous AI system that acts as a secure "Escrow Brain". It uses a **Swarm of Specialized AI Agents** to analyze payment receipts in real-time before releasing any funds.
 
-### 🏗️ System Architecture
+### System Architecture
 ```mermaid
 graph TD
-    User([👤 User / Trader]) -->|Uploads Receipt| UI[🖥️ Next.js Frontend]
+    User([👤 User / Trader]) -->|Uploads Receipt| UI[Next.js Frontend]
     UI -->|POST /api/scan| API{Gateway / Edge}
     
     subgraph "Vercel / Cloud Infrastructure"
-        API -->|Rewrites| PyServer[🐍 Python Serverless Function]
+        API -->|Rewrites| PyServer[Python Serverless Function]
     end
 
     subgraph "Forensic Swarm Engine"
-        PyServer -->|Dispatch| Orch[🎼 Orchestrator]
-        Orch -->|Trace Analysis| Meta[🕵️ Agent Meta]
-        Orch -->|PII Detection| Priv[🔒 Agent Privacy]
-        Orch -->|Visual Auth| Vision[🧠 Agent Vision]
+        PyServer -->|Dispatch| Orch[Orchestrator]
+        Orch -->|Trace Analysis| Meta[Agent Meta]
+        Orch -->|PII Detection| Priv[Agent Privacy]
+        Orch -->|Visual Auth| Vision[Agent Vision]
         
         Meta -->|EXIF/Hex| ValidMeta{Metadata Logic}
         Priv -->|OCR/Regex| Tesseract[Tesseract OCR]
-        Vision -->|Start Analysis| Gemini[✨ Google Gemini Pro]
+        Vision -->|Start Analysis| Gemini[Google Gemini Pro]
     end
 
     ValidMeta -->|Signals| Aggregator[Risk Scoring Engine]
@@ -38,7 +36,7 @@ graph TD
     Gemini -->|Visual Verdict| Aggregator
     
     Aggregator -->|JSON Report| UI
-    UI -->|Render| HUD[🛡️ Cyberpunk HUD]
+    UI -->|Render| HUD[Cyberpunk HUD]
 ```
 
 ### The Agent Swarm
@@ -53,19 +51,19 @@ graph TD
 
 ---
 
-## 🚀 Key Features
+## Key Features
 - **Tactical Sci-Fi HUD**: A "Glassmorphism" interface designed for high-speed analyst work (Cyberpunk Aesthetic).
 - **Real-Time Analysis**: Instant verification (< 5 seconds).
 - **Cross-Platform OCR**: Intelligent text extraction with automatic fallback.
 - **Privacy-First**: No PII leaves the client side without redaction.
 
-## 🛠️ Tech Stack
+## Tech Stack
 - **Frontend**: Next.js 14, Tailwind CSS, Framer Motion (Tactical UI).
 - **Backend**: Python (FastAPI).
 - **AI/ML**: Tesseract OCR, OpenCV (Forensics), Custom Pattern Matching.
 - **Infrastructure**: Vercel (Frontend), Railway/Local (Backend).
 
-## ⚡ Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js 18+
@@ -102,11 +100,11 @@ graph TD
 
 ---
 
-## 🏆 Hackathon Tracks
+## Hackathon Tracks
 Targeting: **ANTI-FRAUD** & **FINANCE OPERATIONS**
 
 > "We don't just check the receipt; we verify the reality behind it."
 
 ---
 
-*Built with ❤️ by Team [Your Team Name] for Deriv AI Talent Sprint 2026*
+*Built with ❤️ by Team Enlighteners, for Deriv AI Talent Sprint 2026*
