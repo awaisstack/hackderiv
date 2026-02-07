@@ -3,7 +3,7 @@ Deriv P2P Sentinel - FastAPI Backend
 AI-Powered Receipt Fraud Detection
 """
 
-from fastapi import FastAPI, UploadFile, File, HTTPException, Form
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
@@ -19,7 +19,9 @@ app = FastAPI(
     title="Deriv P2P Sentinel",
     description="AI-Powered Receipt Fraud Detection for P2P Trading",
     version="1.0.0",
-    root_path="/api/py" if os.getenv("VERCEL") else ""
+    # Vercel Serverless environment detection
+    # AWS_LAMBDA_FUNCTION_NAME is present in Vercel System Env
+    root_path="/api/py" if (os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME")) else ""
 )
 
 # CORS setup for frontend
@@ -201,6 +203,27 @@ async def scan_receipt_base64(
             detail=f"Analysis failed: {str(e)}"
         )
 
+
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form, Request
+
+# ... (rest of imports)
+
+# ... (at the end of file, before if __name__ == "__main__":)
+
+@app.api_route("/{path_name:path}", methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH"])
+async def catch_all(request: Request, path_name: str):
+    """
+    Debug endpoint to catch path mismatches.
+    """
+    return {
+        "status": "debug_catch_all",
+        "message": "Route not found in standard routes, caught by fallback.",
+        "received_method": request.method,
+        "received_path": request.url.path,
+        "raw_path": request.scope.get("path"),
+        "root_path": request.scope.get("root_path"),
+        "path_param": path_name
+    }
 
 if __name__ == "__main__":
     import uvicorn
