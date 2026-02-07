@@ -12,6 +12,35 @@ In P2P trading, scammers often upload **fake, photoshopped, or manipulated bank 
 ## 💡 The Solution: Multi-Agent Forensic Analysis
 **Deriv P2P Sentinel** is an autonomous AI system that acts as a secure "Escrow Brain". It uses a **Swarm of Specialized AI Agents** to analyze payment receipts in real-time before releasing any funds.
 
+### 🏗️ System Architecture
+```mermaid
+graph TD
+    User([👤 User / Trader]) -->|Uploads Receipt| UI[🖥️ Next.js Frontend]
+    UI -->|POST /api/scan| API{Gateway / Edge}
+    
+    subgraph "Vercel / Cloud Infrastructure"
+        API -->|Rewrites| PyServer[🐍 Python Serverless Function]
+    end
+
+    subgraph "Forensic Swarm Engine"
+        PyServer -->|Dispatch| Orch[🎼 Orchestrator]
+        Orch -->|Trace Analysis| Meta[🕵️ Agent Meta]
+        Orch -->|PII Detection| Priv[🔒 Agent Privacy]
+        Orch -->|Visual Auth| Vision[🧠 Agent Vision]
+        
+        Meta -->|EXIF/Hex| ValidMeta{Metadata Logic}
+        Priv -->|OCR/Regex| Tesseract[Tesseract OCR]
+        Vision -->|Start Analysis| Gemini[✨ Google Gemini 1.5 Pro]
+    end
+
+    ValidMeta -->|Signals| Aggregator[Risk Scoring Engine]
+    Tesseract -->|Redacted IMG| Vision
+    Gemini -->|Visual Verdict| Aggregator
+    
+    Aggregator -->|JSON Report| UI
+    UI -->|Render| HUD[🛡️ Cyberpunk HUD]
+```
+
 ### The Agent Swarm
 1.  **🕵️ Agent Meta (Metadata Forensics)**
     - Extracts hidden EXIF data (GPS, software used, modify dates).
