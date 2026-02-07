@@ -113,6 +113,19 @@ export default function Dashboard() {
         reader.readAsDataURL(selectedFile);
     }, []);
 
+    // Load pre-stored sample receipts for judges
+    const loadSampleReceipt = useCallback(async (type: 'original' | 'edited') => {
+        const filename = type === 'original' ? '/original_receipt.png' : '/edited_receipt.png';
+        try {
+            const response = await fetch(filename);
+            const blob = await response.blob();
+            const file = new File([blob], `${type}_receipt.png`, { type: 'image/png' });
+            handleFileSelect(file);
+        } catch (error) {
+            console.error('Error loading sample receipt:', error);
+        }
+    }, [handleFileSelect]);
+
     const handleDrop = useCallback((e: React.DragEvent) => {
         e.preventDefault();
         const droppedFile = e.dataTransfer.files[0];
@@ -320,6 +333,24 @@ export default function Dashboard() {
                                 </div>
                             )}
                         </div>
+                    </div>
+
+                    {/* Sample Receipt Buttons for Judges */}
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => loadSampleReceipt('original')}
+                            className="flex-1 px-3 py-2 text-xs font-medium rounded-lg border border-green-200 bg-green-50 text-green-700 hover:bg-green-100 transition-colors flex items-center justify-center gap-1.5"
+                            disabled={isAnalyzing}
+                        >
+                            <span className="text-sm">✅</span> Original Receipt
+                        </button>
+                        <button
+                            onClick={() => loadSampleReceipt('edited')}
+                            className="flex-1 px-3 py-2 text-xs font-medium rounded-lg border border-red-200 bg-red-50 text-red-700 hover:bg-red-100 transition-colors flex items-center justify-center gap-1.5"
+                            disabled={isAnalyzing}
+                        >
+                            <span className="text-sm">🚨</span> Edited Receipt
+                        </button>
                     </div>
 
                     {/* Transaction Form */}
