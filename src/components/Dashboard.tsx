@@ -187,7 +187,8 @@ export default function Dashboard() {
             if (!response.ok) {
                 let errorMessage = `HTTP Error ${response.status}: ${response.statusText}`;
                 try {
-                    const errorData = await response.json();
+                    const clonedResponse = response.clone();
+                    const errorData = await clonedResponse.json();
                     if (errorData.detail) errorMessage = errorData.detail;
                 } catch (e) {
                     const text = await response.text();
