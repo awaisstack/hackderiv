@@ -198,8 +198,13 @@ export default function Dashboard() {
             setResult(data.analysis);
         } catch (error) {
             console.error('Analysis error:', error);
-            setAllLogs(prev => [...prev, `❌ Error: ${error}`]);
-            setAgents(prev => prev.map(a => a.status === 'running' ? { ...a, status: 'error', thinkingText: 'Failed' } : a));
+            setAllLogs(prev => [...prev, `❌ Error: ${error instanceof Error ? error.message : String(error)}`]);
+            setAgents(prev => prev.map(a => ({
+                ...a,
+                status: 'error',
+                thinkingText: 'Analysis Failed',
+                logs: [...a.logs, '❌ Agent process terminated unexpectedly.']
+            })));
         } finally {
             setIsAnalyzing(false);
         }
