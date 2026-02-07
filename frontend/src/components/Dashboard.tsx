@@ -53,7 +53,7 @@ const AGENT_THINKING = {
     ]
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = '/api/py';
 
 export default function Dashboard() {
     const [file, setFile] = useState<File | null>(null);
