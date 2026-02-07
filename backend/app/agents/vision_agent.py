@@ -112,37 +112,44 @@ class VisionAgent:
             response_text = gemini_result["response"]
             
             # Handle markdown code blocks
-            if "```json" in response_text:
-                response_text = response_text.split("```json")[1].split("```")[0]
-            elif "```" in response_text:
-                response_text = response_text.split("```")[1].split("```")[0]
+            # Robust JSON extraction
+            try:
+                # Find the first '{' and last '}'
+                start_idx = gemini_result["response"].find('{')
+                end_idx = gemini_result["response"].rfind('}')
+                
+                if start_idx != -1 and end_idx != -1:
+                    json_str = gemini_result["response"][start_idx:end_idx+1]
+                    analysis = json.loads(json_str)
+                else:
+                    raise ValueError("No JSON object found in response")
             
-            analysis = json.loads(response_text.strip())
-            
-            result.is_suspicious = analysis.get("is_suspicious", False)
-            result.confidence = analysis.get("confidence", 0.5)
-            result.font_consistency_score = analysis.get("font_consistency_score", 100)
-            result.alignment_score = analysis.get("alignment_score", 100)
-            result.explanation = analysis.get("explanation", "")
-            
-            # Convert findings to flags
-            for finding in analysis.get("findings", []):
+                result.is_suspicious = analysis.get("is_suspicious", False)
+                result.confidence = analysis.get("confidence", 0.5)
+                result.font_consistency_score = analysis.get("font_consistency_score", 100)
+                result.alignment_score = analysis.get("alignment_score", 100)
+                result.explanation = analysis.get("explanation", "")
+                
+                # Convert findings to flags
+                for finding in analysis.get("findings", []):
+                    result.flags.append({
+                        "layer": "Vision",
+                        "severity": finding.get("severity", "MEDIUM"),
+                        "description": finding.get("issue", "Unknown issue"),
+                        "confidence": result.confidence
+                    })
+            except (json.JSONDecodeError, ValueError) as e:
+                 # Fallback: Treat raw response as explanation but MARK AS FAILED
+                print(f"[VISION] JSON Parse Error: {str(e)}")
+                print(f"[VISION] Raw Response: {gemini_result['response']}")
+                
+                result.explanation = "AI Analysis Error: Could not parse response."
                 result.flags.append({
                     "layer": "Vision",
-                    "severity": finding.get("severity", "MEDIUM"),
-                    "description": finding.get("issue", "Unknown issue"),
-                    "confidence": result.confidence
+                    "severity": "LOW",
+                    "description": "Could not parse structured AI response",
+                    "confidence": 0.3
                 })
-            
-        except json.JSONDecodeError as e:
-            # Fallback: Treat raw response as explanation
-            result.explanation = gemini_result["response"][:500]
-            result.flags.append({
-                "layer": "Vision",
-                "severity": "LOW",
-                "description": "Could not parse structured AI response",
-                "confidence": 0.3
-            })
         
         return result
     
