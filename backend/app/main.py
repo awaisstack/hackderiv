@@ -37,14 +37,24 @@ app.add_middleware(
 orchestrator = Orchestrator()
 
 
-@app.get("/")
-async def health_check():
-    """Health check endpoint."""
+@app.api_route("/", methods=["GET", "POST"])
+async def health_check(request: Request):
+    """
+    Health check & Debug endpoint.
+    Accepts POST to catch 405 errors caused by path stripping.
+    """
     return {
         "status": "online",
         "service": "Deriv P2P Sentinel",
         "version": "1.0.0",
-        "agents": ["Agent Meta", "Agent Privacy", "Agent Vision"]
+        "agents": ["Agent Meta", "Agent Privacy", "Agent Vision"],
+        "debug": {
+            "received_method": request.method,
+            "received_path": request.url.path,
+            "raw_path": request.scope.get("path"),
+            "root_path": request.scope.get("root_path"),
+            "full_scope_path": request.scope.get("path")
+        }
     }
 
 
