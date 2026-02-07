@@ -14,14 +14,14 @@ from dotenv import load_dotenv
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(env_path)
 
-# Model priority chain (Newest/Best -> Oldest Fallback)
-# 6 Models Total: Tries experimental/cutting-edge first, then safe stable ones.
+# Model priority chain (Reliable First -> Experimental/Lite Last)
+# Prioritizing models that consistently produce valid JSON and detect forgeries
 MODEL_PRIORITY = [
-    "gemini-3-flash-preview",  # Newest Flash
-    "gemini-3-pro-preview",    # Newest Pro
-    "gemini-2.0-flash",        # Balanced Stable
-    "gemini-2.5-flash-lite",   # Fast Stable
-    "gemini-1.5-pro",          # Legacy Pro
+    "gemini-2.0-flash",        # PRIMARY: Most reliable, smart enough for forgery detection
+    "gemini-2.5-flash",        # Stable, good balance
+    "gemini-1.5-pro",          # Smart, reliable fallback
+    "gemini-3-flash-preview",  # Experimental (may fail JSON parsing)
+    "gemini-2.5-flash-lite",   # Lite version (may miss subtle forgery)
     "gemini-1.5-flash",        # Last Resort
 ]
 
