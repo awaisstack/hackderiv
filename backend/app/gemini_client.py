@@ -36,9 +36,10 @@ class GeminiClient:
             
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
-            print("[!] Warning: GEMINI_API_KEY not found. AI analysis will be simulated.")
+            print("[!] CRITICAL: GEMINI_API_KEY not found in environment! AI analysis will be SIMULATED (always returns Risk 0).")
             self.api_key = None
         else:
+            print(f"[OK] GEMINI_API_KEY found (ends with ...{api_key[-4:]})")
             self.api_key = api_key
             genai.configure(api_key=api_key)
         
