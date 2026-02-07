@@ -1,0 +1,997 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  /* ═══════════════════════════════════════════════════════════════
+     XAEM FUSED THEME: Crystalline + Tensioned + Pressurized
+     Pure white atmosphere, dense black ink, glass-like surfaces
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* Atmosphere - Crystalline White */
+  --bg-0: #ffffff;
+  --bg-1: #fafafa;
+  --surface: rgba(255, 255, 255, 0.92);
+  --surface-strong: #ffffff;
+  --surface-muted: rgba(255, 255, 255, 0.7);
+  --glass: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(18, 18, 18, 0.08);
+
+  /* Ink - Pressurized Black */
+  --foreground: #0a0a0a;
+  --muted: #525252;
+  --border: rgba(10, 10, 10, 0.15);
+  --border-strong: rgba(10, 10, 10, 0.9);
+  --border-pressure: #0a0a0a;
+
+  /* Accent Colors */
+  --accent-green: #059669;
+  --accent-amber: #d97706;
+  --accent-red: #dc2626;
+  --accent-blue: #0284c7;
+
+  /* Agent Colors */
+  --agent-meta: #0284c7;
+  --agent-privacy: #059669;
+  --agent-vision: #d97706;
+
+  /* Canvas */
+  --particle-rgb: 10, 10, 10;
+
+  /* Animation Timing */
+  --ease-tension: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-pressure: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--bg-0);
+  color: var(--foreground);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(18, 18, 18, 0.02) 0px,
+      rgba(18, 18, 18, 0.02) 1px,
+      transparent 1px,
+      transparent 6px);
+  opacity: 0.6;
+  z-index: 0;
+}
+
+/* Typography - Cyberpunk HUD Style */
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUTTONS - Solid Tactical Blocks
+   ═══════════════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  border-radius: 0;
+  /* Solid corners */
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  /* Tactical Border */
+  border: 2px solid var(--foreground);
+  background: transparent;
+  color: var(--foreground);
+
+  /* Sleek Transition */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+  background: var(--foreground);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn-primary {
+  background: var(--foreground);
+  color: #ffffff;
+  border-color: var(--foreground);
+}
+
+.btn-primary:hover {
+  background: #000000;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+  border-color: #000000;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARDS - Crystalline Glass + Tensioned Suspension
+   ═══════════════════════════════════════════════════════════════ */
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+
+  /* Tensioned Transition */
+  transition:
+    transform 0.4s var(--ease-tension),
+    box-shadow 0.4s var(--ease-pressure),
+    border-color 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px) rotate(0.3deg);
+  box-shadow:
+    0 24px 48px rgba(var(--particle-rgb), 0.08),
+    0 0 0 1px rgba(var(--particle-rgb), 0.06);
+  border-color: var(--border-strong);
+}
+
+.card-subtle {
+  background: var(--surface-muted);
+  border-color: var(--border);
+  backdrop-filter: blur(8px);
+}
+
+/* Risk Score Colors */
+.risk-low {
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+.risk-medium {
+  color: var(--accent-amber);
+  border-color: var(--accent-amber);
+}
+
+.risk-high {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+}
+
+/* Agent Status Indicators */
+.agent-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 0;
+  /* Solid corners */
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  border: 1px solid;
+}
+
+.agent-meta {
+  border-color: var(--agent-meta);
+  color: var(--agent-meta);
+}
+
+.agent-privacy {
+  border-color: var(--agent-privacy);
+  color: var(--agent-privacy);
+}
+
+.agent-vision {
+  border-color: var(--agent-vision);
+  color: var(--agent-vision);
+}
+
+/* Animations */
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.5s ease forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Log Terminal */
+.terminal {
+  background: #101010;
+  color: #34d399;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.terminal-line {
+  margin-bottom: 4px;
+  opacity: 0;
+  animation: slideIn 0.3s ease forwards;
+}
+
+/* Upload Zone */
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 48px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-zone:hover {
+  border-color: var(--foreground);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.upload-zone.active {
+  border-color: var(--accent-blue);
+  background: rgba(2, 132, 199, 0.08);
+}
+
+/* Progress Pipeline */
+.pipeline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+}
+
+.pipeline-node {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border: 2px solid var(--border);
+  background: var(--surface-strong);
+  transition: all 0.3s ease;
+}
+
+.pipeline-node.active {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+}
+
+.pipeline-node.complete {
+  border-color: var(--accent-green);
+  background: var(--accent-green);
+  color: white;
+}
+
+.pipeline-connector {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+}
+
+.pipeline-connector.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--accent-blue);
+  animation: progressLine 1s ease forwards;
+}
+
+@keyframes progressLine {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   FUTURISTIC UI ENHANCEMENTS
+   ======================================== */
+
+/* Subtle scanline overlay for retro-futurism effect */
+.scanlines::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.006) 2px,
+      rgba(0, 0, 0, 0.006) 4px);
+  opacity: 0.25;
+}
+
+/* Enhanced button glow on hover */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, transparent 70%);
+  transition: width 0.5s, height 0.5s;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn:hover {
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15), 0 0 60px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: scale(0.98) translateY(0);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 40px rgba(10, 10, 10, 0.4), 0 0 80px rgba(10, 10, 10, 0.2);
+}
+
+/* Card glow effects */
+.card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.08), 0 4px 20px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.card-glow {
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-glow-active {
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.15), 0 0 100px rgba(0, 0, 0, 0.05);
+  border-color: var(--foreground) !important;
+}
+
+/* Glowing dot indicator */
+.glow-dot {
+  position: relative;
+}
+
+.glow-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  border-radius: inherit;
+  filter: blur(8px);
+  opacity: 0.6;
+  z-index: -1;
+}
+
+/* Progress dots with glow */
+.progress-dot-active {
+  box-shadow: 0 0 15px rgba(10, 10, 10, 0.5), 0 0 30px rgba(10, 10, 10, 0.3);
+}
+
+/* Agent card active glow */
+.agent-card-active {
+  box-shadow:
+    0 0 30px rgba(59, 130, 246, 0.3),
+    0 0 60px rgba(59, 130, 246, 0.15),
+    inset 0 0 20px rgba(59, 130, 246, 0.05);
+  border-color: #3B82F6 !important;
+}
+
+.agent-card-complete {
+  box-shadow:
+    0 0 20px rgba(34, 197, 94, 0.2),
+    0 0 40px rgba(34, 197, 94, 0.1);
+}
+
+/* Terminal glow effect */
+.terminal-glow {
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(34, 197, 94, 0.03);
+}
+
+/* Futuristic text glow */
+.text-glow {
+  text-shadow: 0 0 20px rgba(10, 10, 10, 0.3);
+}
+
+.text-glow-active {
+  text-shadow: 0 0 30px rgba(10, 10, 10, 0.5), 0 0 60px rgba(10, 10, 10, 0.3);
+}
+
+/* Pulse glow animation */
+@keyframes pulseGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2), 0 0 60px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Smooth hover lift effect */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Input field focus glow */
+input:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(18, 18, 18, 0.08), 0 0 20px rgba(18, 18, 18, 0.05);
+}
+
+/* Upload zone futuristic enhancement */
+.upload-zone {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.upload-zone:hover {
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+  border-color: var(--foreground);
+}
+
+/* Layout helpers */
+.app-bg {
+  position: relative;
+  z-index: 0;
+}
+
+.hero-card {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 48px 56px;
+  box-shadow: 0 30px 80px rgba(18, 18, 18, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(18, 18, 18, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.surface-strong {
+  background: var(--surface-strong);
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  box-shadow: 0 18px 48px rgba(18, 18, 18, 0.1);
+}
+
+.surface-muted {
+  background: var(--surface-muted);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  box-shadow: 0 10px 30px rgba(18, 18, 18, 0.06);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AGENT CARDS - Crystalline Nodes + Pressurized States
+   ═══════════════════════════════════════════════════════════════ */
+.agent-card {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.4s var(--ease-tension),
+    box-shadow 0.4s var(--ease-pressure),
+    border-color 0.3s ease;
+}
+
+.agent-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+.agent-card-pending {
+  opacity: 0.6;
+  filter: grayscale(0.3);
+}
+
+.agent-card-running {
+  border-color: var(--agent-meta);
+  transform: translateY(-3px);
+}
+
+.agent-card-running::before {
+  background: linear-gradient(90deg, transparent, var(--agent-meta), transparent);
+  animation: current-flow 2s linear infinite;
+  background-size: 200% 100%;
+}
+
+.agent-card-running::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(2, 132, 199, 0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.agent-card-complete {
+  border-color: var(--agent-privacy);
+}
+
+.agent-card-complete::before {
+  background: var(--agent-privacy);
+}
+
+.agent-card-error {
+  border-color: var(--accent-red);
+  background: rgba(220, 38, 38, 0.04);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TERMINAL - Pressurized Ink Chamber
+   ═══════════════════════════════════════════════════════════════ */
+.terminal-shell {
+  background: #050505;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal-shell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.15),
+      transparent);
+  animation: current-flow 4s linear infinite;
+  background-size: 200% 100%;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+  .btn::before,
+  .animate-pulse-glow,
+  .hover-lift {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   XAEM THEME: Luminous Filament Matrix
+   Wire-thin connections, suspended kinetic nodes, tensioned grid systems
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Kinetic Node Pulse - simulates energy flowing through connection points */
+@keyframes node-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--particle-rgb), 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(var(--particle-rgb), 0);
+  }
+}
+
+/* Filament Tension - subtle oscillation for suspended elements */
+@keyframes filament-tension {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  25% {
+    transform: translateY(-2px) rotate(0.3deg);
+  }
+
+  75% {
+    transform: translateY(2px) rotate(-0.3deg);
+  }
+}
+
+/* Current Flow - energy traveling along wire connections */
+@keyframes current-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Suspended kinetic nodes - connection points that pulse with energy */
+.kinetic-node {
+  position: relative;
+  animation: node-pulse 2.5s ease-in-out infinite;
+}
+
+.kinetic-node::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--foreground);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Wire-thin connection lines */
+.filament-line {
+  position: relative;
+}
+
+.filament-line::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--foreground) 20%,
+      var(--foreground) 80%,
+      transparent 100%);
+  opacity: 0.15;
+}
+
+/* Tension-based hover - elements float with slight imbalance */
+.tension-hover {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s ease;
+}
+
+.tension-hover:hover {
+  transform: translateY(-4px) rotate(0.5deg);
+  box-shadow:
+    0 20px 40px rgba(var(--particle-rgb), 0.08),
+    0 0 0 1px rgba(var(--particle-rgb), 0.1);
+}
+
+/* Grid tension - structural stress visualization */
+.grid-tension {
+  background-image:
+    linear-gradient(rgba(var(--particle-rgb), 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--particle-rgb), 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+}
+
+/* Energy conductor - buttons and interactive elements */
+.energy-conductor {
+  position: relative;
+  overflow: hidden;
+}
+
+.energy-conductor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(var(--particle-rgb), 0.08),
+      transparent);
+  transition: left 0.5s ease;
+}
+
+.energy-conductor:hover::before {
+  left: 100%;
+}
+
+/* Suspended element - gravity-aware spacing with slight bounce */
+.suspended {
+  animation: filament-tension 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Matrix intersection points - where grid lines cross */
+.matrix-node {
+  position: relative;
+}
+
+.matrix-node::before,
+.matrix-node::after {
+  content: '';
+  position: absolute;
+  background: var(--foreground);
+  opacity: 0.1;
+}
+
+.matrix-node::before {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.matrix-node::after {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+/* Active filament - glowing wire state */
+.filament-active {
+  position: relative;
+}
+
+.filament-active::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background: linear-gradient(90deg,
+      rgba(var(--particle-rgb), 0.2),
+      transparent,
+      rgba(var(--particle-rgb), 0.2)) border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: current-flow 3s linear infinite;
+  background-size: 200% 100%;
+}
+
+/* Terminal enhancement - data stream aesthetic */
+.terminal-shell.filament-terminal {
+  position: relative;
+}
+
+.terminal-shell.filament-terminal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent);
+  animation: current-flow 4s linear infinite;
+  background-size: 200% 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CYBERPUNK GLITCH & TECH BORDERS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Glitch Animation */
+@keyframes glitch-skew {
+  0% {
+    transform: skew(0deg);
+  }
+
+  20% {
+    transform: skew(-2deg);
+  }
+
+  40% {
+    transform: skew(2deg);
+  }
+
+  60% {
+    transform: skew(-1deg);
+  }
+
+  80% {
+    transform: skew(1deg);
+  }
+
+  100% {
+    transform: skew(0deg);
+  }
+}
+
+.glitch-hover:hover {
+  animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  color: var(--accent-red);
+}
+
+/* Tech Border - Bracketed Corners */
+.tech-border {
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+.tech-border::before,
+.tech-border::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--foreground);
+  transition: all 0.3s ease;
+}
+
+.tech-border::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.tech-border::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+.tech-border:hover::before,
+.tech-border:hover::after {
+  width: 100%;
+  height: 100%;
+  border-color: var(--accent-blue);
+}
