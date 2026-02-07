@@ -107,48 +107,44 @@ class VisionAgent:
         result.model_used = gemini_result["model_used"]
         result.raw_response = gemini_result["response"]
         
-        # Parse the JSON response
-        response_text = gemini_result["response"]
+        # Parse the JSON response - Robust JSON extraction
+        try:
+            # Find the first '{' and last '}'
+            start_idx = gemini_result["response"].find('{')
+            end_idx = gemini_result["response"].rfind('}')
             
-            # Handle markdown code blocks
-            # Robust JSON extraction
-            try:
-                # Find the first '{' and last '}'
-                start_idx = gemini_result["response"].find('{')
-                end_idx = gemini_result["response"].rfind('}')
-                
-                if start_idx != -1 and end_idx != -1:
-                    json_str = gemini_result["response"][start_idx:end_idx+1]
-                    analysis = json.loads(json_str)
-                else:
-                    raise ValueError("No JSON object found in response")
+            if start_idx != -1 and end_idx != -1:
+                json_str = gemini_result["response"][start_idx:end_idx+1]
+                analysis = json.loads(json_str)
+            else:
+                raise ValueError("No JSON object found in response")
+        
+            result.is_suspicious = analysis.get("is_suspicious", False)
+            result.confidence = analysis.get("confidence", 0.5)
+            result.font_consistency_score = analysis.get("font_consistency_score", 100)
+            result.alignment_score = analysis.get("alignment_score", 100)
+            result.explanation = analysis.get("explanation", "")
             
-                result.is_suspicious = analysis.get("is_suspicious", False)
-                result.confidence = analysis.get("confidence", 0.5)
-                result.font_consistency_score = analysis.get("font_consistency_score", 100)
-                result.alignment_score = analysis.get("alignment_score", 100)
-                result.explanation = analysis.get("explanation", "")
-                
-                # Convert findings to flags
-                for finding in analysis.get("findings", []):
-                    result.flags.append({
-                        "layer": "Vision",
-                        "severity": finding.get("severity", "MEDIUM"),
-                        "description": finding.get("issue", "Unknown issue"),
-                        "confidence": result.confidence
-                    })
-            except (json.JSONDecodeError, ValueError) as e:
-                 # Fallback: Treat raw response as explanation but MARK AS FAILED
-                print(f"[VISION] JSON Parse Error: {str(e)}")
-                print(f"[VISION] Raw Response: {gemini_result['response']}")
-                
-                result.explanation = "AI Analysis Error: Could not parse response."
+            # Convert findings to flags
+            for finding in analysis.get("findings", []):
                 result.flags.append({
                     "layer": "Vision",
-                    "severity": "LOW",
-                    "description": "Could not parse structured AI response",
-                    "confidence": 0.3
+                    "severity": finding.get("severity", "MEDIUM"),
+                    "description": finding.get("issue", "Unknown issue"),
+                    "confidence": result.confidence
                 })
+        except (json.JSONDecodeError, ValueError) as e:
+            # Fallback: Treat raw response as explanation but MARK AS FAILED
+            print(f"[VISION] JSON Parse Error: {str(e)}")
+            print(f"[VISION] Raw Response: {gemini_result['response']}")
+            
+            result.explanation = "AI Analysis Error: Could not parse response."
+            result.flags.append({
+                "layer": "Vision",
+                "severity": "LOW",
+                "description": "Could not parse structured AI response",
+                "confidence": 0.3
+            })
         
         return result
     
